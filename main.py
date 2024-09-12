@@ -202,51 +202,133 @@ class SandwichMachine:
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 
+# Created SandwichMachine instance
 TheMachine = SandwichMachine(resources)
 
+# This variable is created to exit the while loop when needed
 input_check = 0
 
 while (input_check == 0):
+
+    # Asking the user to input one of the options provided
     user_input = input("What would you like to order today? (small/ medium/ large/ off/ report): ")
+
+    # If the user has inputted "small"
     if user_input == "small":
+
+        # Putting the amount of ingredients to make a small sandwich
+        # into the The_Ingred variable
         The_Ingred = recipes["small"]["ingredients"]
+
+        # If the machine has enough ingredients to make the small sandwich
         if TheMachine.check_resources(The_Ingred) == True:
+
+            # Putting the cost of a small sandwich into the cost variable
             cost = recipes["small"]["cost"]
+
+            # Calculating the amount of money the user has inputted
             money_have = TheMachine.process_coins()
+
+            # If the user has inputted enough money to afford a small sandwich
             if TheMachine.transaction_result(money_have, cost) == True:
+
+                # Makes the small sandwich using the ingredients needed for a small sandwich
                 TheMachine.make_sandwich("small", The_Ingred)
+
+                # Letting the user know that the machine has made the small sandwich
                 print("Small sandwich is ready. Bon appetit!")
+
+        # The machine does not have enough ingredients to make the small sandwich
         else:
+
+            # Letting the user know that the machine cannot make the sandwich
             print("Unfortunately, we cannot make this sandwich")
+
+    # If the user has inputted "medium"
     elif (user_input == "medium"):
+
+        # Putting the amount of ingredients to make a medium sandwich
+        # into the The_Ingred variable
         The_Ingred = recipes["medium"]["ingredients"]
+
+        # If the machine has enough ingredients to make the medium sandwich
         if TheMachine.check_resources(The_Ingred) == True:
+
+            # Putting the cost of a medium sandwich into the cost variable
             cost = recipes["medium"]["cost"]
+
+            # Calculating the amount of money the user has inputted
             money_have = TheMachine.process_coins()
+
+            # If the user has inputted enough money to afford a medium sandwich
             if TheMachine.transaction_result(money_have, cost) == True:
+
+                # Makes the medium sandwich using the ingredients needed for a medium sandwich
                 TheMachine.make_sandwich("medium", The_Ingred)
+
+                # Letting the user know that the machine has made the medium sandwich
                 print("Medium sandwich is ready. Bon appetit!")
+
+        # The machine does not have enough ingredients to make the medium sandwich
         else:
+
+            # Letting the user know that the machine cannot make the sandwich
             print("Unfortunately, we cannot make this sandwich")
 
+    # If the user has inputted "large"
     elif (user_input == "large"):
+
+        # Putting the amount of ingredients to make a large sandwich
+        # into the The_Ingred variable
         The_Ingred = recipes["large"]["ingredients"]
+
+        # If the machine has enough ingredients to make the large sandwich
         if TheMachine.check_resources(The_Ingred) == True:
+
+            # Putting the cost of a large sandwich into the cost variable
             cost = recipes["large"]["cost"]
+
+            # Calculating the amount of money the user has inputted
             money_have = TheMachine.process_coins()
+
+            # If the user has inputted enough money to afford a large sandwich
             if TheMachine.transaction_result(money_have, cost) == True:
+
+                # Makes the large sandwich using the ingredients needed for a large sandwich
                 TheMachine.make_sandwich("large", The_Ingred)
+
+                # Letting the user know that the machine has made the large sandwich
                 print("Large sandwich is ready. Bon appetit!")
+
+        # The machine does not have enough ingredients to make the large sandwich
         else:
+
+            # Letting the user know that the machine cannot make the sandwich
             print("Unfortunately, we cannot make this sandwich")
 
+    # If the user has inputted the "off" option
     elif (user_input == "off"):
+
+        # Lets the user know that they have turned off the machine
         print("You have turned off the machine. Good night.")
+
+        # Making input_check 1 to exit the while loop
         input_check = 1
+
+    # If the user has inputted the "report" option
     elif (user_input == "report"):
+
+        # The machine currently has...
         print("We currently have:")
+
+        # This prints what ingredients the machine currently has
         TheMachine.report_time()
+
+    # If the user has not inputted one of the options
     else:
+
+        # This lets the user know that they have not entered one of the options
+        # and since input_check is still 0, the while loop still runs
         print("Oops! You have not chosen one of the options. Please choose one of the options")
 
 
