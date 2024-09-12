@@ -117,11 +117,11 @@ class SandwichMachine:
         cheese_used = recipes[sandwich_size]["ingredients"]["cheese"]
         self.machine_resources["cheese"] -= cheese_used
 
-    # Reports on what resources are left in the machine
+    #
     def report_time(self):
         print(f"Bread: {self.machine_resources['bread']} slice(s)")
-        print("Ham: ", {self.machine_resources['ham']}, " slice(s)")
-        print("Cheese: ", {self.machine_resources['bread']}, " pound(s)")
+        print("Ham: ", resources.get("ham"), " slice(s)")
+        print("Cheese: ", resources.get("cheese"), " pound(s)")
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 
