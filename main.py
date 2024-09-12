@@ -41,6 +41,7 @@ class SandwichMachine:
     def __init__(self, machine_resources):
         self.machine_resources = machine_resources
 
+    # Checks if machine has enough ingredients to create sandwich
     def check_resources(self, ingredients):
         bread_num = ingredients.get("bread")
         ham_num = ingredients.get("ham")
@@ -71,6 +72,7 @@ class SandwichMachine:
         else:
             return False
 
+    # Calculates coins that was inputted into the machine
     def process_coins(self):
         money_have = 0.00
 
@@ -93,6 +95,7 @@ class SandwichMachine:
 
         return money_have
 
+    # Checks if money inputted into machine was enough for the cost of the sandwich
     def transaction_result(self, coins, cost):
         self.machine_resources = self.machine_resources
         if coins >= cost:
@@ -103,6 +106,7 @@ class SandwichMachine:
             print("Sorry that's not enough money. Money refunded.")
             return False
 
+    # Takes away needed resources to make sandwich
     def make_sandwich(self, sandwich_size, order_ingredients):
         bread_used = recipes[sandwich_size]["ingredients"]["bread"]
         self.machine_resources["bread"] -= bread_used
@@ -113,10 +117,11 @@ class SandwichMachine:
         cheese_used = recipes[sandwich_size]["ingredients"]["cheese"]
         self.machine_resources["cheese"] -= cheese_used
 
+    # Reports on what resources are left in the machine
     def report_time(self):
         print(f"Bread: {self.machine_resources['bread']} slice(s)")
-        print("Ham: ", resources.get("ham"), " slice(s)")
-        print("Cheese: ", resources.get("cheese"), " pound(s)")
+        print("Ham: ", {self.machine_resources['ham']}, " slice(s)")
+        print("Cheese: ", {self.machine_resources['bread']}, " pound(s)")
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 
