@@ -1,14 +1,11 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DATETIME
+from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DATETIME, Float
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from ..dependencies.database import Base
 
-
-class Resource(Base):
-    __tablename__ = "resources"
-
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    item = Column(String(100), unique=True, nullable=False)
-    amount = Column(Integer, index=True, nullable=False, server_default='0.0')
-
-    recipes = relationship("Recipe", back_populates="resource")
+# Resource Management model
+class ResourceManagement(Base):
+    __tablename__ = 'resource_management'
+    resource_id = Column(Integer, primary_key=True)
+    resource_name = Column(String, nullable=False)
+    resource_amount = Column(Float, nullable=False)

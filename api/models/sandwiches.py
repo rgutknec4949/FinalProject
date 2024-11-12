@@ -4,8 +4,8 @@ from datetime import datetime
 from ..dependencies.database import Base
 
 
-class Sandwich(Base):
-    __tablename__ = "sandwiches"
+class Food(Base):
+    __tablename__ = "Food"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     sandwich_name = Column(String(100), unique=True, nullable=True)
