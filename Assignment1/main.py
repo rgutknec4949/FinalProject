@@ -200,6 +200,8 @@ class SandwichMachine:
         # Printing the amount of cheese the machine currently has
         print("Cheese: ", resources.get("cheese"), " pound(s)")
 
+
+
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 
 # Created SandwichMachine instance
