@@ -6,7 +6,7 @@ from ..dependencies.database import Base
 class Rating(Base):
     __tablename__ = 'rating'
     rev_id = Column(Integer, primary_key=True)
-    rev_text = Column(String, nullable=True)
+    rev_text = Column(String(128), nullable=True)
     rev_score = Column(Integer, nullable=False)
 
     # Foreign Key

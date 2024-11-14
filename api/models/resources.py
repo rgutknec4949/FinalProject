@@ -5,7 +5,7 @@ from ..dependencies.database import Base
 
 # Resource Management model
 class ResourceManagement(Base):
-    __tablename__ = 'resource_management'
+    __tablename__ = 'resources'
     resource_id = Column(Integer, primary_key=True)
-    resource_name = Column(String, nullable=False)
+    resource_name = Column(String(16), nullable=False)
     resource_amount = Column(Float, nullable=False)

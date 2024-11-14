@@ -3,6 +3,6 @@ class conf:
     db_name = "discord_diner"
     db_port = 3306
     db_user = "root"
-    db_password = ""
+    db_password = "topathupha"
     app_host = "localhost"
     app_port = 8000

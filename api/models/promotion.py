@@ -8,7 +8,7 @@ from ..dependencies.database import Base
 class Promotion(Base):
     __tablename__ = 'promotion'
     promo_id = Column(Integer, primary_key=True)
-    promo_code = Column(String, unique=True, nullable=False)
+    promo_code = Column(String(16), unique=True, nullable=False)
     promo_exp = Column(DATETIME, nullable=False)
 
     # Relationships

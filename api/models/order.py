@@ -6,11 +6,11 @@ from ..dependencies.database import Base
 
 # Order model
 class Order(Base):
-    __tablename__ = 'order'
+    __tablename__ = 'orders'
     order_id = Column(Integer, primary_key=True)
     order_date = Column(DATETIME, nullable=False)
-    order_track = Column(String, unique=True, nullable=True)
-    order_status = Column(String, nullable=False)
+    order_track = Column(String(16), unique=True, nullable=True)
+    order_status = Column(String(16), nullable=False)
     order_total = Column(Float, nullable=False)
 
     # Foreign Keys
