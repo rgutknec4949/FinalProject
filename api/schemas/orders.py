@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from .order_details import OrderDetail
 
 
+# Orders schema
 
 class OrderBase(BaseModel):
     customer_name: str

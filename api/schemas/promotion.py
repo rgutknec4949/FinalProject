@@ -1,28 +1,27 @@
+from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel
 
-
-# Payment Schemas
-class PaymentBase(BaseModel):
-    pay_info: str
-    pay_status: str
-    pay_type: str
-    cust_id: int
-    order_id: int
+from api.schemas.orders import Order
 
 
-class PaymentCreate(PaymentBase):
+# Promotion Schemas
+class PromotionBase(BaseModel):
+    promo_code: str
+    promo_exp: datetime
+
+class PromotionCreate(PromotionBase):
     pass
 
 
-class PaymentUpdate(BaseModel):
-    pay_info: Optional[str] = None
-    pay_status: Optional[str] = None
-    pay_type: Optional[str] = None
+class PromotionUpdate(BaseModel):
+    promo_code: Optional[str] = None
+    promo_exp: Optional[datetime] = None
 
 
-class Payment(PaymentBase):
-    pay_id: int
+class Promotion(PromotionBase):
+    promo_id: int
+    orders: List["Order"] = []
 
     class ConfigDict:
         from_attributes = True
