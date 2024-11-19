@@ -3,7 +3,6 @@ from fastapi import HTTPException, status, Response, Depends
 from ..models import promotion as model
 from sqlalchemy.exc import SQLAlchemyError
 
-
 def create(db: Session, request):
     new_item = model.Promotion(
         promo_id=request.promo_id,
