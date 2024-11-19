@@ -18,7 +18,7 @@ class PromotionUpdate(BaseModel):
 
 class Promotion(PromotionBase):
     promo_id: int
-    orders: List["Order"] = []
+    orders: List["Promotion"] = []
 
     class ConfigDict:
         from_attributes = True
