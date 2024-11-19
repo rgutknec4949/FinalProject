@@ -8,8 +8,8 @@ class Recipe(Base):
     __tablename__ = "recipes"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    sandwich_id = Column(Integer, ForeignKey("sandwiches.id"))
-    resource_id = Column(Integer, ForeignKey("resources.id"))
+    sandwich_id = Column(Integer, ForeignKey("sandwiches.sandwich_id"))
+    resource_id = Column(Integer, ForeignKey("resources.resource_id"))
     amount = Column(Integer, index=True, nullable=False, server_default='0.0')
 
     sandwich = relationship("Sandwich", back_populates="recipes")

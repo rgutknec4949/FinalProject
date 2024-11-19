@@ -4,10 +4,10 @@ from datetime import datetime
 from ..dependencies.database import Base
 
 
-class Sandwich(Base):
+class Sandwiches(Base):
     __tablename__ = "sandwiches"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    sandwich_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     sandwich_name = Column(String(100), unique=True, nullable=True)
     price = Column(DECIMAL(4, 2), nullable=False, server_default='0.0')
 
