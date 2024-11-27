@@ -7,4 +7,3 @@ class Promotion(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     code_name = Column(String(16), nullable=False, unique=True)
     expiration_date = Column(Date, nullable=False)
-

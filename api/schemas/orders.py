@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from .order_details import OrderDetail
 
 class OrderBase(BaseModel):
     customer_name: str
     description: Optional[str] = None
-    promo: Optional[str] = None
+    promo_id: Optional[str] = None
 
 
 class OrderCreate(OrderBase):
