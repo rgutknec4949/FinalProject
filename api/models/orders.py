@@ -14,5 +14,6 @@ class Order(Base):
     promo_id = Column(String(16), ForeignKey("promotions.code_name"), nullable=True, unique=True)
     order_details = relationship("OrderDetail", back_populates="order")
     reviews = relationship("Review", back_populates="order")
+    payment = relationship("Payment", back_populates="order", uselist=False)
 
     promo = relationship("Promotion")
