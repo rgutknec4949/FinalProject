@@ -11,7 +11,8 @@ def create(db: Session, request: order_schema.OrderCreate):
         description=request.description,
         promo_id=request.promo_id,
         payment=request.payment,
-        tracking_number=request.tracking_number
+        tracking_number=request.tracking_number,
+        delivery_option=request.delivery_option
     )
     try:
         db.add(new_order)

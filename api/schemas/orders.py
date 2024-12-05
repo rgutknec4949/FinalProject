@@ -9,6 +9,7 @@ class OrderBase(BaseModel):
     promo_id: Optional[str] = None
     payment: str
     tracking_number: str
+    delivery_option: Optional[str] = None
 
 
 class OrderCreate(OrderBase):

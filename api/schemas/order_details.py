@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class OrderDetailBase(BaseModel):
-    amount: int
     item_name: str
     price: float
     quantity: int
@@ -16,8 +15,9 @@ class OrderDetailCreate(OrderDetailBase):
 
 class OrderDetailUpdate(BaseModel):
     order_id: Optional[int] = None
-    amount: Optional[int] = None
-
+    quantity: Optional[int] = None
+    price: Optional[float] = None
+    item_name: Optional[str] = None
 
 class OrderDetail(OrderDetailBase):
     id: int
