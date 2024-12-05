@@ -7,6 +7,8 @@ class OrderBase(BaseModel):
     customer_name: str
     description: Optional[str] = None
     promo_id: Optional[str] = None
+    payment: str
+    tracking_number: str
 
 
 class OrderCreate(OrderBase):
