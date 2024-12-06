@@ -4,21 +4,24 @@ from pydantic import BaseModel
 
 
 class ResourceBase(BaseModel):
-    item: str
+    ingredient: str
     amount: int
 
 
 class ResourceCreate(ResourceBase):
-    pass
+    ingredient: str
+    amount: Optional[int] = None
 
 
 class ResourceUpdate(BaseModel):
-    item: Optional[str] = None
+    ingredient: Optional[str] = None
     amount: Optional[int] = None
 
 
 class Resource(ResourceBase):
     id: int
+    ingredient: str
+    amount: int
 
     class ConfigDict:
         from_attributes = True
