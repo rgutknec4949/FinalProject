@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
 from ..models import menu as model
 from sqlalchemy.exc import SQLAlchemyError
+from ..models import menu as menu_model
 
 def create(db: Session, request):
     new_item = model.Menu(
@@ -62,3 +63,6 @@ def delete(db: Session, item_id):
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def search_by_category(db: Session, category: str):
+    return db.query(menu_model.Menu).filter(menu_model.Menu.category == category).all()

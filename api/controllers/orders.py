@@ -1,95 +1,107 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
-from ..models import orders as order_model, order_details as detail_model
 from ..schemas import orders as order_schema
 from sqlalchemy.exc import SQLAlchemyError
+from datetime import datetime
+from ..models import orders as model
+from ..models import orders as order_model, menu as menu_model
+
+
 
 def create(db: Session, request: order_schema.OrderCreate):
-    # Handle promo_id being empty (set to None if empty string)
     promo_id = request.promo_id if request.promo_id != "" else None
 
-    # Create the Order
-    new_order = order_model.Order(
+    menu_item = db.query(menu_model.Menu).filter(menu_model.Menu.id == request.menu_id).first()
+    if not menu_item:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Menu item not found")
+
+    # Increment the price of the menu item
+    order_model.Order.revenue += menu_item.price
+
+    new_order = model.Order(
         customer_name=request.customer_name,
         description=request.description,
-        promo_id=promo_id,  # Use the handled promo_id
+        promo_id=promo_id,
         payment=request.payment,
         tracking_number=request.tracking_number,
-        delivery_option=request.delivery_option
+        delivery_option=request.delivery_option,
+        order_date=request.order_date,
+        menu_id=request.menu_id,
+        revenue=menu_item.price
     )
 
     try:
-        # Add Order and commit
         db.add(new_order)
         db.commit()
         db.refresh(new_order)
-
-        # Automatically create a corresponding OrderDetail
-        new_detail = detail_model.OrderDetail(
-            order_id=new_order.id,  # Use the ID of the created order
-            item_name="Default Item",  # Default values, can be updated later
-            quantity=1,
-            price=0
-        )
-        db.add(new_detail)
-        db.commit()  # Commit both Order and OrderDetail in one transaction
-
     except SQLAlchemyError as e:
-        db.rollback()  # Rollback the transaction if there’s an error
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
-
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     return new_order
 
 def read_all(db: Session):
     try:
-        result = db.query(order_model.Order).all()
+        result = db.query(model.Order).all()
     except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     return result
 
 def read_one(db: Session, item_id):
     try:
-        item = db.query(order_model.Order).filter(order_model.Order.id == item_id).first()
+        item = db.query(model.Order).filter(model.Order.id == item_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     return item
 
 def update(db: Session, item_id, request):
     try:
-        item = db.query(order_model.Order).filter(order_model.Order.id == item_id)
+        item = db.query(model.Order).filter(model.Order.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         update_data = request.dict(exclude_unset=True)
         item.update(update_data, synchronize_session=False)
         db.commit()
     except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     return item.first()
 
 def delete(db: Session, item_id):
     try:
-        item = db.query(order_model.Order).filter(order_model.Order.id == item_id)
+        item = db.query(model.Order).filter(model.Order.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)
         db.commit()
     except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 def read_by_track(db: Session, tracking_number):
     try:
-        item = db.query(order_model.Order).filter(order_model.Order.tracking_number == tracking_number).first()
+        item = db.query(model.Order).filter(model.Order.tracking_number == tracking_number).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tracking number not found!")
     except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     return item
+
+def read_orders_by_date_range(db: Session, start_date: datetime, end_date: datetime):
+    try:
+        orders = db.query(model.Order).filter(
+            model.Order.order_date >= start_date,
+            model.Order.order_date <= end_date
+        ).all()
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    return orders
+
+def get_total_revenue(db: Session):
+    try:
+        total_revenue = db.query(func.sum(model.Order.revenue)).scalar()
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    return total_revenue

@@ -1,3 +1,5 @@
+from email.policy import default
+
 from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DATETIME
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -12,10 +14,9 @@ class Order(Base):
     description = Column(String(300))
     promo_id = Column(String(16), ForeignKey("promotions.code_name"), nullable=True)
     payment = Column(String(100), unique=False)
-    tracking_number = Column(String(50), nullable=True, unique=True)
+    tracking_number = Column(Integer, nullable=False, unique=True)
     delivery_option = Column(String(50), nullable=True)
-
-    # Cascade delete: when an Order is deleted, also delete corresponding OrderDetail entries
-    order_details = relationship("OrderDetail", back_populates="order", cascade="all, delete-orphan")
+    menu_id = Column(Integer, ForeignKey("menu.id"), nullable=True)
+    revenue = Column(Integer, nullable=False, default=0)
 
     promo = relationship("Promotion")
